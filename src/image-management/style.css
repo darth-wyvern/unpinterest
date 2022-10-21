@@ -1,0 +1,29 @@
+@media (min-width: 30em) {
+    .card-container {
+        column-count: 2;
+    }
+}
+
+@media (min-width: 48em) {
+    .card-container {
+        column-count: 3;
+    }
+}
+
+@media (min-width: 62em) {
+    .card-container {
+        column-count: 4;
+    }
+}
+
+@media (min-width: 80em) {
+    .card-container {
+        column-count: 5;
+    }
+}
+
+@media (min-width: 96em) {
+    .card-container {
+        column-count: 7;
+    }
+}
