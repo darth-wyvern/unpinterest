@@ -37,17 +37,15 @@ export const imageSlice = createSlice({
   reducers: {
     querySearch: (state, action) => {
       state.query = action.payload
-    },
-    nextPage: (state) => {
-      if (state.page.number < state.page.totalPage) {
-        state.page.number += 1
+      state.page = {
+        number: 1,
+        perPage: 30,
+        totalPage: 1,
       }
     },
-    prevPage: (state) => {
-      if (state.page.number > 1) {
-        state.page.number -= 1
-      }
-    }
+    changePage: (state, action) => {
+      state.page.number = action.payload
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getImages.fulfilled, (state, action) => {
@@ -66,6 +64,6 @@ export const imageSlice = createSlice({
   }
 });
 
-export const { prevPage, nextPage, querySearch } = imageSlice.actions;
+export const { querySearch, changePage } = imageSlice.actions;
 
 export default imageSlice.reducer;

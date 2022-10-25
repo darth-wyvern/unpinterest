@@ -1,19 +1,37 @@
-import { Box, Button, Flex } from "@chakra-ui/react"
-import { useDispatch, useSelector } from "react-redux"
-import { prevPage, nextPage } from '../image-management/imageSlice'
+import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
+import { Button, Flex } from "@chakra-ui/react";
 
-export default function AppPagination() {
-  const dispatch = useDispatch()
-  const { page } = useSelector(state => state.image)
+export default function AppPagination({ currentPage, listNode, prev, next, gotoPage }) {
+  const cursorPointer = { cursor: 'pointer' };
 
   return (
-    <Box>
-      <Box>
-        <Flex gap={3} justifyContent='center' >
-          <Button onClick={() => dispatch(prevPage())} fontSize='small'>prev</Button>
-          <Button colorScheme='teal' variant='ghost' fontSize='small'>{page.number} of {page.totalPage}</Button>
-          <Button onClick={() => dispatch(nextPage())} fontSize='small'>next</Button>
-        </Flex>
-      </Box>
-    </Box>)
+    <Flex gap={3} justifyContent='center' >
+      <Button
+        onClick={prev}
+        style={cursorPointer}
+      >
+        <ChevronLeftIcon />
+      </Button>
+      {listNode.map((item) => (
+        <Button
+          key={item}
+          colorScheme={(currentPage === item) ? 'blue' : 'gray'}
+          onClick={() => gotoPage(item)}
+          sx={cursorPointer}
+          _hover={{
+            transition: '.1s',
+            transform: 'scale(1.4)'
+          }}
+        >
+          {item}
+        </Button>
+      ))}
+      <Button
+        onClick={next}
+        style={cursorPointer}
+      >
+        <ChevronRightIcon />
+      </Button>
+    </Flex>
+  );
 }
