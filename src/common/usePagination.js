@@ -1,36 +1,42 @@
-import { useState } from "react";
+import { useState } from "react"
 
 /**
- * usePagination is a hook for the use of pagination
- * @param {number} totalPage - number of pages
- * @returns 
+ * inRange is a function sure value number is in range
+ * 
+ * @param {number} number 
+ * @param {number} min 
+ * @param {number} max 
+ * @returns number in range min and max
  */
-function usePagination(totalPage) {
-  const [currentPage, gotoPage] = useState(1)
-  const maxDisplayNodePagination = 5;
+const inRange = (number, min, max) => {
+  return (number < min) ? min : (number > max) ? max : number
+}
 
-  const [offset, setOffset] = useState(0);
-  const listNode = Array.apply(null, Array(offset + maxDisplayNodePagination - offset)).map(function (_, i) { return i + offset + 1; }) //list.slice(offset, offset + maxDisplayNodePagination);
+/**
+ * usePagination2
+ * 
+ * @param {Object} data - pagination data
+ * @returns component
+ */
+function usePagination({ numRange, totalPage, current }) {
+  const numNode = numRange - 1 || 4;
+
+  const [currentPage, gotoPage] = useState(current || 1)
+  let minNodePage = Math.round(currentPage - numNode / 2)
+  let maxNodePage = Math.round(currentPage + numNode / 2)
+
+  minNodePage = inRange(minNodePage, 1, totalPage)
+  maxNodePage = inRange(maxNodePage, 1, totalPage)
 
   const prev = () => {
-    const _prev = (currentPage - 1 < 1 ? currentPage : currentPage - 1);
-    gotoPage(_prev);
-    if (offset && currentPage < offset + 1 + maxDisplayNodePagination / 2) {
-      setOffset(offset - 1);
-    }
+    gotoPage(inRange(currentPage - 1, 1, totalPage))
   }
 
   const next = () => {
-    const _next = (currentPage + 1 > totalPage ? currentPage : currentPage + 1);
-    gotoPage(_next);
-    if (
-      maxDisplayNodePagination + offset < totalPage &&
-      currentPage + 1 > maxDisplayNodePagination / 2 + offset + 1) {
-      setOffset(currentPage - 2);
-    }
+    gotoPage(inRange(currentPage + 1, 1, totalPage))
   }
 
-  return { currentPage, gotoPage, listNode, next, prev };
+  return { prev, next, currentPage, gotoPage, minNodePage, maxNodePage }
 }
 
-export default usePagination;
+export default usePagination
