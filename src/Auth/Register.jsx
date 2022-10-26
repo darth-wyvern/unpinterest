@@ -1,13 +1,16 @@
 import React from 'react'
-import { Box, Flex, Button, Image, Checkbox, Link } from '@chakra-ui/react'
+import { Box, Flex, Button, Image, Checkbox } from '@chakra-ui/react'
 import ValidateInput from './ValidateInput'
 import * as Yup from "yup";
 import { Field, Formik } from 'formik'
 import { useDispatch } from 'react-redux';
 import { signupAction } from './AuthSlice';
+import { Link, useNavigate } from "react-router-dom";
+import { SmallCloseIcon } from '@chakra-ui/icons';
 
 export default function Register() {
   const dispatch = useDispatch()
+  const navigation = useNavigate()
 
   const RegisterSchema = Yup.object().shape({
     firstName: Yup.string()
@@ -45,16 +48,17 @@ export default function Register() {
     email: "",
     password: "",
     confirmPassword: "",
-    rememberMe: false,
+    remember: false,
   };
 
   return (
-    <Flex bg={{ base: 'white', sm: 'gray.100' }} position='fixed' inset={0} p={{ base: 0, sm: 5 }} overflow='auto' >
+    <Flex bg={{ base: 'white', sm: '#0007' }} position='fixed' inset={0} p={{ base: 0, sm: 5 }} overflow='auto' zIndex={999}>
       <Flex m='auto' borderRadius='1rem' overflow={{ base: 'hidden', sm: 'none' }} maxW='960px'>
         <Box display={{ base: 'none', md: 'block' }}>
           <Image height='100%' objectFit='cover' src='https://i.pinimg.com/736x/67/13/81/6713813ffa60c09afb28013bea53020a.jpg' loading='lazy' />
         </Box>
-        <Box p={{ base: 5, sm: 10 }} bg='white'>
+        <Box p={{ base: 5, sm: 10 }} bg='white' pos={{ base: 'static', sm: 'relative' }}>
+          <Button pos='absolute' right={0} top={0} m={3} onClick={() => navigation('/')}><SmallCloseIcon /></Button>
           <Box w='64px' h='64px' borderRadius='50%' overflow='hidden' m='auto'>
             <Image w='100%' h='100%' objectFit='cover' src='https://cdn3.vectorstock.com/i/1000x1000/28/47/lock-icon-with-a-long-shadow-vector-20142847.jpg' loading='lazy' />
           </Box>
@@ -63,7 +67,7 @@ export default function Register() {
             initialValues={initialValues}
             validationSchema={RegisterSchema}
             onSubmit={(values) => {
-              dispatch(signupAction({ firstname: values.firstName, lastname: values.lastname, email: values.email, password: values.password }))
+              dispatch(signupAction({ firstname: values.firstName, lastname: values.lastName, email: values.email, password: values.password }))
             }}
           >
             {({ handleSubmit, errors, touched, values }) => (
@@ -118,8 +122,8 @@ export default function Register() {
 
                 <Field
                   as={Checkbox}
-                  id="rememberMe"
-                  name="rememberMe"
+                  id="remember"
+                  name="remember"
                   colorScheme="purple"
                 >
                   <Box fontSize="small">Remember me?</Box>
@@ -132,7 +136,10 @@ export default function Register() {
             )}
           </Formik>
           <Flex fontSize='small' pos='absolute' bottom={0} left='50%' transform='translate(-50%)' p={5} whiteSpace='nowrap'>
-            <Box><Link href='#' color='blue.300' fontWeight='bold'>Login with account</Link></Box>
+            <Box>
+              {/* <Link href='#' color='blue.300' fontWeight='bold'>Login with account</Link> */}
+              <Link to='/signin'>Login with account</Link>
+            </Box>
           </Flex>
         </Box>
       </Flex>
