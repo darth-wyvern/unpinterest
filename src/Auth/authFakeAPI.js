@@ -1,14 +1,20 @@
 /**
- * signIn
+ * signInAPI
  * @param {Object} signinData
  * @param {string} signinData.email - the email address
  * @param {string} signinData.password - the password
  * @returns 
  */
-export const signIn = ({ email, password }) => {
+export const signInAPI = ({ email, password }) => {
   return new Promise((resolve, reject) =>
-    setInterval((email, password) => resolve("jwt_token")),
-    5000
+    setTimeout(() => {
+      if (email === 'admin@gmail.com' && password === 'admin') {
+        return resolve("jwt_token")
+      }
+      else {
+        return reject(new Error('account not found'))
+      }
+    }, 1),
   )
 }
 
@@ -21,7 +27,7 @@ export const signIn = ({ email, password }) => {
  * @param {string} registerData.password - the password
  * @returns 
  */
-export const Register = ({ firstname, lastname, email, password }) => {
+export const register = ({ firstname, lastname, email, password }) => {
   return new Promise((resolve, reject) =>
     setInterval((firstname, lastname, email, password) => resolve("jwt_token")),
     5000
