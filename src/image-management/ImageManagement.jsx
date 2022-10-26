@@ -3,8 +3,12 @@ import { Box, Link, Spinner, Image, Flex } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
 import { ExternalLinkIcon } from "@chakra-ui/icons";
 import "./style.css";
+import StorageAPI from "../common/StorageAPI";
+import { useNavigate } from "react-router-dom";
 
 function CardImage({ data }) {
+  const navigator = useNavigate()
+
   return (
     <Box pt={2} className="card-image">
       <Box
@@ -14,8 +18,6 @@ function CardImage({ data }) {
         className="wrapper-image"
       >
         <Box
-          as={Link}
-          href={data.links.html}
           className="goto"
           pos="absolute"
           m={2}
@@ -25,6 +27,15 @@ function CardImage({ data }) {
           w="36px"
           h="36px"
           borderRadius="50%"
+          cursor='pointer'
+          onClick={() => {
+            const auth = StorageAPI.local.get('authToken') || StorageAPI.session.get('authToken')
+            if (auth) {
+              window.location.href = data.links.html;
+            } else {
+              navigator('/signin')
+            }
+          }}
         >
           <ExternalLinkIcon
             pos="absolute"
@@ -64,7 +75,7 @@ export default function ImageManagement() {
           <Box className="card-container" columnGap={3} p={1}>
             {
               data.map((i) => (
-                <Box key={i.id} display="inline-block" w="100%" mt={5}>
+                <Box key={i.id} display="inline-block" w="100%">
                   <CardImage data={i} />
                 </Box>
               ))
