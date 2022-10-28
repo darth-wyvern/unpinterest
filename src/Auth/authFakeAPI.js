@@ -1,3 +1,19 @@
+let accounts = [
+  {
+    email: 'admin@gmail.com',
+    password: 'admin',
+  }
+]
+
+function haveAccount(email, password) {
+  for (let i = 0; i < accounts.length; i++) {
+    if (accounts[i].email === email && accounts[i].password === password) {
+      return true;
+    }
+  }
+  return false;
+}
+
 /**
  * signInAPI
  * @param {Object} signinData
@@ -8,13 +24,13 @@
 export const signInAPI = ({ email, password }) => {
   return new Promise((resolve, reject) =>
     setTimeout(() => {
-      if (email === 'admin@gmail.com' && password === 'admin') {
+      if (haveAccount(email, password)) {
         return resolve("jwt_token")
       }
       else {
         return reject(new Error('account not found'))
       }
-    }, 1),
+    }, 2000),
   )
 }
 
@@ -27,9 +43,26 @@ export const signInAPI = ({ email, password }) => {
  * @param {string} registerData.password - the password
  * @returns 
  */
-export const register = ({ firstname, lastname, email, password }) => {
+export const register = (firstname, lastname, email, password) => {
+  console.log('firstname ', firstname)
+  console.log('lastname ', lastname)
+  console.log('email ', email)
+  console.log('password ', password)
   return new Promise((resolve, reject) =>
-    setInterval((firstname, lastname, email, password) => resolve("jwt_token")),
-    5000
+    setTimeout(() => {
+      if (!haveAccount(email, password)) {
+        accounts.push({
+          firstname: firstname,
+          lastname: lastname,
+          email: email,
+          password: password,
+        })
+        console.log(accounts)
+        return resolve("jwt_token")
+      }
+      else {
+        return reject(new Error('account already exists'))
+      }
+    }, 2000),
   )
 }
