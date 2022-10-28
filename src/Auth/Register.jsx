@@ -1,8 +1,8 @@
 import React from 'react'
-import { Box, Flex, Button, Image, Checkbox } from '@chakra-ui/react'
+import { Box, Flex, Button, Image } from '@chakra-ui/react'
 import ValidateInput from './ValidateInput'
 import * as Yup from "yup";
-import { Field, Formik } from 'formik'
+import { Formik } from 'formik'
 import { useDispatch } from 'react-redux';
 import { signupAction } from './AuthSlice';
 import { Link, useNavigate } from "react-router-dom";
@@ -42,13 +42,22 @@ export default function Register() {
     return error;
   };
 
+  const validateConfirmPassword = (password, confirmPassword) => {
+    let error;
+    if (password && confirmPassword) {
+      if (password !== confirmPassword) {
+        error = "Password not matched";
+      }
+    }
+    return error;
+  };
+
   const initialValues = {
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-    remember: false,
+    firstName: "nguyen",
+    lastName: "nhan",
+    email: "nhan@gmail.com",
+    password: "123123",
+    confirmPassword: "123123",
   };
 
   return (
@@ -79,7 +88,7 @@ export default function Register() {
                     name="firstName"
                     label="First Name"
                     type='text'
-                    values={values.firstName}
+                    value={values.firstName}
                   />
 
                   <ValidateInput
@@ -88,7 +97,7 @@ export default function Register() {
                     name="lastName"
                     label="Last Name"
                     type='text'
-                    values={values.lastName}
+                    value={values.lastName}
                   />
                 </Flex>
 
@@ -98,8 +107,8 @@ export default function Register() {
                   name="email"
                   label="Email Address"
                   type='email'
-                  values={values.email}
-                  validate={(values) => validateEmail(values)}
+                  value={values.email}
+                  validate={(value) => validateEmail(value)}
                 />
 
                 <ValidateInput
@@ -108,7 +117,7 @@ export default function Register() {
                   name="password"
                   label="Password"
                   type='password'
-                  values={values.password}
+                  value={values.password}
                 />
 
                 <ValidateInput
@@ -117,27 +126,18 @@ export default function Register() {
                   name="confirmPassword"
                   label="Confirm Password"
                   type='password'
-                  values={values.confirmPassword}
+                  value={values.confirmPassword}
+                  validate={(value) => validateConfirmPassword(values.password, value)}
                 />
 
-                <Field
-                  as={Checkbox}
-                  id="remember"
-                  name="remember"
-                  colorScheme="purple"
-                >
-                  <Box fontSize="small">Remember me?</Box>
-                </Field>
-
                 <Button type="submit" disabled={!errors} colorScheme="teal" width="full">
-                  Login
+                  Register
                 </Button>
               </Flex>
             )}
           </Formik>
           <Flex fontSize='small' pos='absolute' bottom={0} left='50%' transform='translate(-50%)' p={5} whiteSpace='nowrap'>
             <Box>
-              {/* <Link href='#' color='blue.300' fontWeight='bold'>Login with account</Link> */}
               <Link to='/signin'>Login with account</Link>
             </Box>
           </Flex>

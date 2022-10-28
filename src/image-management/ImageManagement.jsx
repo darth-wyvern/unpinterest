@@ -1,10 +1,9 @@
 import React from "react";
-import { Box, Link, Spinner, Image, Flex } from "@chakra-ui/react";
+import { Box, Spinner, Image, Flex } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
-import { ExternalLinkIcon } from "@chakra-ui/icons";
-import "./style.css";
+import { useNavigate, useParams } from "react-router-dom";
 import StorageAPI from "../common/StorageAPI";
-import { useNavigate } from "react-router-dom";
+import "./style.css";
 
 function CardImage({ data }) {
   const navigator = useNavigate()
@@ -24,26 +23,19 @@ function CardImage({ data }) {
           zIndex='1'
           bottom='0'
           bgColor="#fff"
-          w="36px"
-          h="36px"
-          borderRadius="50%"
           cursor='pointer'
+          borderRadius={5}
+          p='.2rem .5rem'
+          fontSize='small'
           onClick={() => {
             const auth = StorageAPI.local.get('authToken') || StorageAPI.session.get('authToken')
             if (auth) {
-              window.location.href = data.links.html;
+              window.open(data.links.html);
             } else {
               navigator('/signin')
             }
           }}
-        >
-          <ExternalLinkIcon
-            pos="absolute"
-            left="50%"
-            top="50%"
-            transform="translate(-50%, -50%)"
-          />
-        </Box>
+        >View Detail</Box>
         <Image
           className="image"
           style={{
@@ -62,6 +54,8 @@ function CardImage({ data }) {
 }
 
 export default function ImageManagement() {
+  // const { page, query } = useParams()
+  // console.log(page + ' ' + query);
   const { data, loading } = useSelector((state) => state.image);
 
   return (

@@ -36,7 +36,15 @@ function usePagination({ numRange, totalPage, current }) {
     gotoPage(inRange(currentPage + 1, 1, totalPage))
   }
 
-  return { prev, next, currentPage, gotoPage, minNodePage, maxNodePage }
+  const jumpPrev = () => {
+    gotoPage(inRange(currentPage - 5, 1, totalPage))
+  }
+
+  const jumpNext = () => {
+    gotoPage(inRange(currentPage + 5, 1, totalPage))
+  }
+
+  return { prev, next, currentPage, gotoPage, jumpPrev, jumpNext, minNodePage, maxNodePage }
 }
 
 export default usePagination

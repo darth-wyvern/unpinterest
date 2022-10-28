@@ -64,7 +64,7 @@ export default function Login() {
                   name="email"
                   label="Email Address"
                   type='email'
-                  values={values.email}
+                  value={values.email}
                   validate={(values) => validateEmail(values)}
                 />
 
@@ -74,7 +74,7 @@ export default function Login() {
                   name="password"
                   label="Password"
                   type='password'
-                  values={values.password}
+                  value={values.password}
                 />
 
                 <Field

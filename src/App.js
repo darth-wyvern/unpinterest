@@ -1,7 +1,7 @@
 import React from "react";
 import { Box } from "@chakra-ui/react";
 import "./App.css";
-import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import withSuspense from "./common/withSuspense";
 
 const DefaultLayout = React.lazy(() => import('./layout/DefaultLayout'));

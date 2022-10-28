@@ -1,7 +1,7 @@
 import { FormControl, FormErrorMessage, FormLabel, Input } from "@chakra-ui/react";
 import { Field } from "formik";
 
-export default function ValidateInput({ errors, touched, name, label, validate, type, values }) {
+export default function ValidateInput({ errors, touched, name, label, validate, type, value }) {
 
   const haveValue = {
     backgroundColor: "white",
@@ -33,7 +33,7 @@ export default function ValidateInput({ errors, touched, name, label, validate, 
         htmlFor={name}
         transition='.2s'
         _focus={haveValue}
-        sx={values ? { ...haveValue, ...styleInput } : { ...normalInput, ...styleInput }}
+        sx={value ? { ...haveValue, ...styleInput } : { ...normalInput, ...styleInput }}
       >
         {label}
       </FormLabel>
