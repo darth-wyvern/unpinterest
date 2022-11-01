@@ -30,7 +30,12 @@ export default function AppHeader() {
   const { token } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    dispatch(setToken(window.localStorage.getItem("authToken")));
+    if (window.localStorage.getItem("authToken")) {
+      dispatch(setToken(window.localStorage.getItem("authToken")));
+    }
+    if (window.sessionStorage.getItem("authToken")) {
+      dispatch(setToken(window.sessionStorage.getItem("authToken")));
+    }
   }, [dispatch]);
 
   return (
