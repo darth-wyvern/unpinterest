@@ -5,7 +5,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import withSuspense from "./common/withSuspense";
 
 const DefaultLayout = React.lazy(() => import('./layout/DefaultLayout'));
-const signin = React.lazy(() => import('./Auth/Login'))
+const signin = React.lazy(() => import('./Auth/Login/LoginCheckToast'))
 const signup = React.lazy(() => import('./Auth/Register/Register3StepVerification'))
 
 function App() {

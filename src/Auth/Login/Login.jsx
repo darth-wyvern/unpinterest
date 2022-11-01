@@ -1,18 +1,16 @@
 import React from "react";
-import { Box, Flex, Button, Image, Checkbox } from "@chakra-ui/react";
-import ValidateInput from "./ValidateInput";
+import { Box, Flex, Button, Image, Checkbox, Text } from "@chakra-ui/react";
+import ValidateInput from "../ValidateInput";
 import * as Yup from "yup";
 import { Field, Formik } from "formik";
-import { useDispatch, useSelector } from "react-redux";
-import { signin } from "./AuthSlice";
+import { useDispatch } from "react-redux";
+import { signin } from "../AuthSlice";
 import { Link, useNavigate } from "react-router-dom";
 import { SmallCloseIcon } from "@chakra-ui/icons";
 
-export default function Login() {
+export default function Login({ nextStep }) {
   const dispatch = useDispatch();
   const navigation = useNavigate();
-
-  const { toastSignin } = useSelector((state) => state.auth);
 
   const RegisterSchema = Yup.object().shape({
     email: Yup.string().email("Invalid email").required("Required"),
@@ -92,6 +90,7 @@ export default function Login() {
             validationSchema={RegisterSchema}
             onSubmit={(values) => {
               dispatch(signin(values));
+              nextStep();
             }}
           >
             {({ handleSubmit, errors, touched, values }) => (
@@ -150,12 +149,12 @@ export default function Login() {
             p={5}
             whiteSpace="nowrap"
           >
-            <Box>
-              Don't have an account?{" "}
-              <Link to="/signup" color="blue.300" fontWeight="bold">
+            <Text mr={1}>Don't have an account?</Text>
+            <Link to="/signup" fontWeight="bold">
+              <Text color="blue" fontWeight="bold">
                 Register
-              </Link>
-            </Box>
+              </Text>
+            </Link>
           </Flex>
         </Box>
       </Flex>
