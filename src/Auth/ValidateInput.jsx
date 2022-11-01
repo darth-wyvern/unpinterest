@@ -1,39 +1,52 @@
-import { FormControl, FormErrorMessage, FormLabel, Input } from "@chakra-ui/react";
+import {
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+  Input,
+} from "@chakra-ui/react";
 import { Field } from "formik";
 
-export default function ValidateInput({ errors, touched, name, label, validate, type, value }) {
-
+export default function ValidateInput({
+  errors,
+  touched,
+  name,
+  label,
+  validate,
+  type,
+  value,
+}) {
   const haveValue = {
     backgroundColor: "white",
     top: "0",
     fontSize: "8pt",
     transform: "translateY(-45%)",
-  }
+  };
 
   const normalInput = {
     fontSize: "small",
     transform: "translateY(-50%)",
     top: "50%",
-  }
+  };
 
   const styleInput = {
-    position: 'absolute',
-    zIndex: '2',
-    left: '1rem',
-    padding: '0 .2rem',
-    color: 'gray.800',
-  }
+    position: "absolute",
+    zIndex: "2",
+    left: "1rem",
+    padding: "0 .2rem",
+    color: "gray.800",
+  };
 
   return (
-    <FormControl
-      isInvalid={!!errors && touched}
-      pos="relative"
-    >
+    <FormControl isInvalid={!!errors && touched} pos="relative">
       <FormLabel
         htmlFor={name}
-        transition='.2s'
+        transition=".2s"
         _focus={haveValue}
-        sx={value ? { ...haveValue, ...styleInput } : { ...normalInput, ...styleInput }}
+        sx={
+          value
+            ? { ...haveValue, ...styleInput }
+            : { ...normalInput, ...styleInput }
+        }
       >
         {label}
       </FormLabel>
@@ -46,7 +59,16 @@ export default function ValidateInput({ errors, touched, name, label, validate, 
         fontSize="10pt"
         autoComplete="new-password"
       />
-      <FormErrorMessage sx={{ pos: 'absolute', top: '100%', transform: 'translateY(-45%)', fontSize: 'small' }}>{errors}</FormErrorMessage>
+      <FormErrorMessage
+        sx={{
+          pos: "absolute",
+          top: "100%",
+          transform: "translateY(-45%)",
+          fontSize: "small",
+        }}
+      >
+        {errors}
+      </FormErrorMessage>
     </FormControl>
   );
 }

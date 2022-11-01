@@ -6,11 +6,11 @@ import withSuspense from "./common/withSuspense";
 
 const DefaultLayout = React.lazy(() => import('./layout/DefaultLayout'));
 const signin = React.lazy(() => import('./Auth/Login'))
-const signup = React.lazy(() => import('./Auth/Register'))
+const signup = React.lazy(() => import('./Auth/Register/Register3StepVerification'))
 
 function App() {
   return (
-    <Box className="App" p={3}>
+    <Box className="App" pt={3}>
       <BrowserRouter>
         <Routes>
           <Route path="/*" element={withSuspense(DefaultLayout)()} >

@@ -16,11 +16,16 @@ export default function DefaultLayout() {
   }, [dispatch, page, query]);
 
   return (
-    <Box className="App" p={3}>
-      <Button fontSize='small' onClick={() => {
-        window.sessionStorage.setItem("key", "value");
-      }}>check signin</Button>
-      <Box pos="fixed" top={0} zIndex={2}>/
+    <Box className="App" pt={3} p="1rem">
+      <Button
+        fontSize="small"
+        onClick={() => {
+          window.sessionStorage.setItem("key", "value");
+        }}
+      >
+        check signin
+      </Button>
+      <Box pos="fixed" top={0} zIndex={2}>
         <AppHeader />
       </Box>
       <Box>
@@ -39,10 +44,7 @@ export default function DefaultLayout() {
           _hover={{ opacity: 1 }}
         >
           <Box className="app-pagination">
-            <AppPagintion
-              total={page.totalPage}
-              defaultCurrent={2}
-            />
+            <AppPagintion total={page.totalPage} defaultCurrent={2} />
           </Box>
         </Flex>
       </Box>

@@ -42,7 +42,7 @@ export default function AppPagintion({ defaultCurrent, total }) {
   }, [dispatch, gotoPage, query]);
 
   return (
-    <Flex gap={2}>
+    <Flex gap={2} flexWrap="wrap">
       <Button onClick={() => prev()} w="1rem">
         <ChevronLeftIcon boxSize={6} _hover={{ color: "blue.300" }} />
       </Button>
@@ -78,25 +78,29 @@ export default function AppPagintion({ defaultCurrent, total }) {
           {item}
         </Button>
       ))}
-      {(currentPage < total - 3) && <Button
-        onClick={() => jumpNext()}
-        w="1rem"
-        _hover={{
-          ".icon": { display: "block" },
-          ".jumpNext": { display: "none" },
-        }}
-      >
-        <ArrowRightIcon
-          boxSize={2}
-          className="icon"
-          display="none"
-          color="blue.300"
-        />
-        <Box className="jumpNext">...</Box>
-      </Button>}
-      {(currentPage < total - 2) && <Button w="1rem" onClick={() => gotoPage(total)}>
-        {total}
-      </Button>}
+      {currentPage < total - 3 && (
+        <Button
+          onClick={() => jumpNext()}
+          w="1rem"
+          _hover={{
+            ".icon": { display: "block" },
+            ".jumpNext": { display: "none" },
+          }}
+        >
+          <ArrowRightIcon
+            boxSize={2}
+            className="icon"
+            display="none"
+            color="blue.300"
+          />
+          <Box className="jumpNext">...</Box>
+        </Button>
+      )}
+      {currentPage < total - 2 && (
+        <Button w="1rem" onClick={() => gotoPage(total)}>
+          {total}
+        </Button>
+      )}
       <Button onClick={() => next()} w="1rem">
         <ChevronRightIcon _hover={{ color: "blue.300" }} />
       </Button>

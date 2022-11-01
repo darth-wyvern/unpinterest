@@ -1,16 +1,13 @@
-import React from 'react'
-import { Box, Flex, Button, Image } from '@chakra-ui/react'
-import ValidateInput from './ValidateInput'
+import React from "react";
+import { Box, Flex, Button, Image } from "@chakra-ui/react";
+import ValidateInput from "../ValidateInput";
 import * as Yup from "yup";
-import { Formik } from 'formik'
-import { useDispatch } from 'react-redux';
-import { signupAction } from './AuthSlice';
+import { Formik } from "formik";
 import { Link, useNavigate } from "react-router-dom";
-import { SmallCloseIcon } from '@chakra-ui/icons';
+import { SmallCloseIcon } from "@chakra-ui/icons";
 
-export default function Register() {
-  const dispatch = useDispatch()
-  const navigation = useNavigate()
+export default function Register({ nextStep, getValues }) {
+  const navigation = useNavigate();
 
   const RegisterSchema = Yup.object().shape({
     firstName: Yup.string()
@@ -60,34 +57,73 @@ export default function Register() {
     confirmPassword: "123123",
   };
 
+  const handleSubmit = (values) => {
+    getValues(values);
+    nextStep();
+  };
+
   return (
-    <Flex bg={{ base: 'white', sm: '#0007' }} position='fixed' inset={0} p={{ base: 0, sm: 5 }} overflow='auto' zIndex={999}>
-      <Flex m='auto' borderRadius='1rem' overflow={{ base: 'hidden', sm: 'none' }} maxW='960px'>
-        <Box display={{ base: 'none', md: 'block' }}>
-          <Image height='100%' objectFit='cover' src='https://i.pinimg.com/736x/67/13/81/6713813ffa60c09afb28013bea53020a.jpg' loading='lazy' />
+    <Flex
+      bg={{ base: "white", sm: "#0007" }}
+      position="fixed"
+      inset={0}
+      p={{ base: 0, sm: 5 }}
+      overflow="auto"
+    >
+      <Flex
+        m="auto"
+        borderRadius="1rem"
+        overflow={{ base: "hidden", sm: "none" }}
+        maxW="960px"
+      >
+        <Box display={{ base: "none", md: "block" }}>
+          <Image
+            height="100%"
+            objectFit="cover"
+            src="https://i.pinimg.com/736x/67/13/81/6713813ffa60c09afb28013bea53020a.jpg"
+            loading="lazy"
+          />
         </Box>
-        <Box p={{ base: 5, sm: 10 }} bg='white' pos={{ base: 'static', sm: 'relative' }}>
-          <Button pos='absolute' right={0} top={0} m={3} onClick={() => navigation('/')}><SmallCloseIcon /></Button>
-          <Box w='64px' h='64px' borderRadius='50%' overflow='hidden' m='auto'>
-            <Image w='100%' h='100%' objectFit='cover' src='https://cdn3.vectorstock.com/i/1000x1000/28/47/lock-icon-with-a-long-shadow-vector-20142847.jpg' loading='lazy' />
+        <Box
+          p={{ base: 5, sm: 10 }}
+          bg="white"
+          pos={{ base: "static", sm: "relative" }}
+        >
+          <Button
+            pos="absolute"
+            right={0}
+            top={0}
+            m={3}
+            onClick={() => navigation("/")}
+          >
+            <SmallCloseIcon />
+          </Button>
+          <Box w="64px" h="64px" borderRadius="50%" overflow="hidden" m="auto">
+            <Image
+              w="100%"
+              h="100%"
+              objectFit="cover"
+              src="https://cdn3.vectorstock.com/i/1000x1000/28/47/lock-icon-with-a-long-shadow-vector-20142847.jpg"
+              loading="lazy"
+            />
           </Box>
-          <Box fontSize='xx-large' textAlign='center' mb={5} >Register</Box>
+          <Box fontSize="xx-large" textAlign="center" mb={5}>
+            Register
+          </Box>
           <Formik
             initialValues={initialValues}
             validationSchema={RegisterSchema}
-            onSubmit={(values) => {
-              dispatch(signupAction({ firstname: values.firstName, lastname: values.lastName, email: values.email, password: values.password }))
-            }}
+            onSubmit={handleSubmit}
           >
             {({ handleSubmit, errors, touched, values }) => (
-              <Flex as='form' onSubmit={handleSubmit} flexDir='column' gap={6}>
-                <Flex gap={6} minW='20em'>
+              <Flex as="form" onSubmit={handleSubmit} flexDir="column" gap={6}>
+                <Flex gap={6} minW="20em">
                   <ValidateInput
                     touched={touched}
                     errors={errors.firstName}
                     name="firstName"
                     label="First Name"
-                    type='text'
+                    type="text"
                     value={values.firstName}
                   />
 
@@ -96,7 +132,7 @@ export default function Register() {
                     errors={errors.lastName}
                     name="lastName"
                     label="Last Name"
-                    type='text'
+                    type="text"
                     value={values.lastName}
                   />
                 </Flex>
@@ -106,7 +142,7 @@ export default function Register() {
                   errors={errors.email}
                   name="email"
                   label="Email Address"
-                  type='email'
+                  type="email"
                   value={values.email}
                   validate={(value) => validateEmail(value)}
                 />
@@ -116,7 +152,7 @@ export default function Register() {
                   errors={errors.password}
                   name="password"
                   label="Password"
-                  type='password'
+                  type="password"
                   value={values.password}
                 />
 
@@ -125,24 +161,39 @@ export default function Register() {
                   errors={errors.confirmPassword}
                   name="confirmPassword"
                   label="Confirm Password"
-                  type='password'
+                  type="password"
                   value={values.confirmPassword}
-                  validate={(value) => validateConfirmPassword(values.password, value)}
+                  validate={(value) =>
+                    validateConfirmPassword(values.password, value)
+                  }
                 />
 
-                <Button type="submit" disabled={!errors} colorScheme="teal" width="full">
-                  Register
+                <Button
+                  type="submit"
+                  disabled={!errors}
+                  colorScheme="teal"
+                  width="full"
+                >
+                  next
                 </Button>
               </Flex>
             )}
           </Formik>
-          <Flex fontSize='small' pos='absolute' bottom={0} left='50%' transform='translate(-50%)' p={5} whiteSpace='nowrap'>
+          <Flex
+            fontSize="small"
+            pos="absolute"
+            bottom={0}
+            left="50%"
+            transform="translate(-50%)"
+            p={5}
+            whiteSpace="nowrap"
+          >
             <Box>
-              <Link to='/signin'>Login with account</Link>
+              <Link to="/signin">Login with account</Link>
             </Box>
           </Flex>
         </Box>
       </Flex>
-    </Flex >
-  )
+    </Flex>
+  );
 }
