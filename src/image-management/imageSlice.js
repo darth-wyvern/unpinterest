@@ -9,15 +9,16 @@ const getRequestHeaders = () => ({
 });
 
 const initialState = {
-  query: "sea",
+  query: "",
   page: {
-    number: 1,
+    number: undefined,
     perPage: 30,
     totalPage: 1,
   },
   errorMessage: null,
   data: [],
   loading: false,
+  imageChoosing: null,
 };
 
 export const getImages = createAsyncThunk(
@@ -49,6 +50,9 @@ export const imageSlice = createSlice({
     changePage: (state, action) => {
       state.page.number = action.payload;
     },
+    setImageChoosing: (state, action) => {
+      state.imageChoosing = action.payload
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -68,6 +72,6 @@ export const imageSlice = createSlice({
   },
 });
 
-export const { querySearch, changePage } = imageSlice.actions;
+export const { querySearch, changePage, setImageChoosing } = imageSlice.actions;
 
 export default imageSlice.reducer;

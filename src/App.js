@@ -7,6 +7,7 @@ import withSuspense from "./common/withSuspense";
 const DefaultLayout = React.lazy(() => import('./layout/DefaultLayout'));
 const signin = React.lazy(() => import('./Auth/Login/LoginCheckToast'))
 const signup = React.lazy(() => import('./Auth/Register/Register3StepVerification'))
+const lightbox = React.lazy(() => import('./image-management/lightBox'))
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
           <Route path="/*" element={withSuspense(DefaultLayout)()} >
             <Route path="signin" element={withSuspense(signin)()} />
             <Route path="signup" element={withSuspense(signup)()} />
+            <Route path="lightbox" element={withSuspense(lightbox)()} />
           </Route>
         </Routes>
       </BrowserRouter>

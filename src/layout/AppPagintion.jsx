@@ -9,40 +9,43 @@ import {
   ArrowLeftIcon,
   ArrowRightIcon,
 } from "@chakra-ui/icons";
+import { createSearchParams, Link, useSearchParams } from "react-router-dom";
 
 export default function AppPagintion({ defaultCurrent, total }) {
-  const {
-    prev,
-    next,
-    currentPage,
-    gotoPage,
-    jumpPrev,
-    jumpNext,
-    minNodePage,
-    maxNodePage,
-  } = usePagination({ totalPage: total, current: defaultCurrent });
-
-  // create array pagination nodes
-  const listNode = Array.apply(null, Array(maxNodePage - minNodePage + 1)).map(
-    function (_, i) {
-      return i + minNodePage;
-    }
-  );
-
   const dispatch = useDispatch();
-  const { query } = useSelector((state) => state.image);
+  const { query, page } = useSelector((state) => state.image);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const _page = searchParams.get("page");
+  const _query = searchParams.get("query");
+
+  const { prev, next, currentPage, gotoPage, jumpPrev, jumpNext, listNode } =
+    usePagination({ totalPage: total, current: defaultCurrent });
 
   useEffect(() => {
+    gotoPage(parseInt(_page));
+  }, [_page, gotoPage]);
+
+  // useEffect(() => {
+  //   createSearchParams(
+  //     setSearchParams({
+  //       query: query,
+  //       page: 1,
+  //     })
+  //   );
+  // }, [query, setSearchParams]);
+
+  useEffect(() => {
+    createSearchParams(
+      setSearchParams({
+        query: _query,
+        page: currentPage,
+      })
+    );
     dispatch(changePage(currentPage));
-  }, [currentPage, dispatch]);
-
-  useEffect(() => {
-    dispatch(changePage(1));
-    gotoPage(1);
-  }, [dispatch, gotoPage, query]);
+  }, [_page, _query, currentPage, dispatch, setSearchParams]);
 
   return (
-    <Flex gap={2} flexWrap="wrap">
+    <Flex gap={2} flexWrap="wrap" borderRadius="1rem">
       <Button onClick={() => prev()} w="1rem">
         <ChevronLeftIcon boxSize={6} _hover={{ color: "blue.300" }} />
       </Button>

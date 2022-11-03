@@ -1,17 +1,14 @@
 import React from "react";
 import { Box, Spinner, Image, Flex } from "@chakra-ui/react";
-import { useSelector } from "react-redux";
-import {
-  useNavigate,
-  createSearchParams,
-  useSearchParams,
-} from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import StorageAPI from "../common/StorageAPI";
 import "./style.css";
-import { useEffect } from "react";
+import { setImageChoosing } from "./imageSlice";
 
-function CardImage({ data }) {
+function CardImage({ data, index }) {
   const navigator = useNavigate();
+  const dispatch = useDispatch();
 
   return (
     <Box pt={2} className="card-image">
@@ -51,6 +48,17 @@ function CardImage({ data }) {
             width: "100%",
             height: "100%",
           }}
+          onClick={() => {
+            const auth =
+              StorageAPI.local.get("authToken") ||
+              StorageAPI.session.get("authToken");
+            if (auth) {
+              navigator("/lightbox");
+              dispatch(setImageChoosing(index));
+            } else {
+              navigator("/signin");
+            }
+          }}
           src={data.urls.regular}
           alt=""
         />
@@ -63,12 +71,7 @@ function CardImage({ data }) {
 }
 
 export default function ImageManagement() {
-  const { data, loading, query, page } = useSelector((state) => state.image);
-  const [, setSearchParams] = useSearchParams();
-
-  useEffect(() => {
-    setSearchParams(createSearchParams({ page: page.number, query: query }));
-  }, [page.number, query, setSearchParams]);
+  const { data, loading } = useSelector((state) => state.image);
 
   return (
     <Box mt="2rem">
@@ -79,9 +82,9 @@ export default function ImageManagement() {
       ) : (
         <Box>
           <Box className="card-container" columnGap={3}>
-            {data.map((i) => (
+            {data.map((i, index) => (
               <Box key={i.id} display="inline-block" w="100%">
-                <CardImage data={i} />
+                <CardImage data={i} index={index} />
               </Box>
             ))}
           </Box>
