@@ -12,19 +12,24 @@ import {
   MenuList,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { setToken, signout } from "../Auth/AuthSlice";
 import { AtSignIcon } from "@chakra-ui/icons";
 
 export default function AppHeader() {
   const dispatch = useDispatch();
   const bgColorHeader = useColorModeValue("white", "gray.800");
+  const [searchParams, setSearchParams] = useSearchParams();
   const searchInputRef = useRef();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(querySearch(searchInputRef.current.value));
+    // dispatch(querySearch(searchInputRef.current.value));
     searchInputRef.current.focus();
+    setSearchParams({
+      query: searchInputRef.current.value,
+      page: 1
+    })
   };
 
   const { token } = useSelector((state) => state.auth);

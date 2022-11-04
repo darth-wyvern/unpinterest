@@ -9,22 +9,19 @@ const getRequestHeaders = () => ({
 });
 
 const initialState = {
-  query: "",
-  page: {
-    number: undefined,
-    perPage: 30,
-    totalPage: 1,
-  },
-  errorMessage: null,
+  query: "cat",
+  page: 1,
+  totalPage: undefined,
+  errorMessage: undefined,
   data: [],
   loading: false,
-  imageChoosing: null,
+  imageChoosing: undefined,
 };
 
 export const getImages = createAsyncThunk(
   "image/get",
   async ({ query, page }) => {
-    const url = `${unsplashURL}/search/photos?query=${query}&page=${page.number}&per_page=${page.perPage}`;
+    const url = `${unsplashURL}/search/photos?query=${query}&page=${page}&per_page=30`;
     const response = await fetch(url, {
       method: "GET",
       headers: getRequestHeaders(),
@@ -39,19 +36,14 @@ export const imageSlice = createSlice({
   name: "image",
   initialState,
   reducers: {
-    querySearch: (state, action) => {
-      state.query = action.payload;
-      state.page = {
-        number: 1,
-        perPage: 30,
-        totalPage: 1,
-      };
-    },
-    changePage: (state, action) => {
-      state.page.number = action.payload;
-    },
     setImageChoosing: (state, action) => {
       state.imageChoosing = action.payload
+    },
+    setQuery: (state, action) => {
+      state.query = action.payload
+    },
+    setPage: (state, action) => {
+      state.page = action.payload
     }
   },
   extraReducers: (builder) => {
@@ -59,7 +51,7 @@ export const imageSlice = createSlice({
       .addCase(getImages.fulfilled, (state, action) => {
         state.loading = false;
         state.data = action.payload.results;
-        state.page.totalPage = action.payload.total_pages;
+        state.totalPage = action.payload.total_pages;
       })
       .addCase(getImages.pending, (state) => {
         state.loading = true;
@@ -72,6 +64,6 @@ export const imageSlice = createSlice({
   },
 });
 
-export const { querySearch, changePage, setImageChoosing } = imageSlice.actions;
+export const { setQuery, setPage, setImageChoosing } = imageSlice.actions;
 
 export default imageSlice.reducer;

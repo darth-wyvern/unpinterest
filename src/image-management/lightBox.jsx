@@ -29,7 +29,7 @@ export default function LightBox() {
   };
 
   return (
-    <Box pos="fixed" zIndex={999} inset={0} h="100vh" bg="#000" color="white">
+    <Box pos="fixed" zIndex={999} inset={0} h="100vh" w='100vw' bg="#000" color="white">
       <CloseButton pos="fixed" right={0} onClick={() => navigator("/")} />
       {tabIndex > 0 && (
         <IconButton

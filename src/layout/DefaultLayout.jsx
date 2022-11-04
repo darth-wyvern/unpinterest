@@ -4,55 +4,52 @@ import AppHeader from "./AppHeader";
 import { Box, Button, Flex } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  getImages,
-  changePage,
-  querySearch,
+  getImages, setPage, setQuery
 } from "../image-management/imageSlice";
 import AppPagintion from "./AppPagintion";
-import { createSearchParams, Outlet, useSearchParams } from "react-router-dom";
+import { Outlet, useSearchParams } from "react-router-dom";
+import usePagination from '../common/usePagination'
 
 export default function DefaultLayout() {
   const dispatch = useDispatch();
-  const { data, page } = useSelector((state) => state.image);
+  const { query, page, data, totalPage } = useSelector((state) => state.image);
+
   const [searchParams, setSearchParams] = useSearchParams();
+  const _page = searchParams.get('page')
+  const _query = searchParams.get('query')
 
-  const _page = searchParams.get("page");
-  const _query = searchParams.get("query");
+  const { prev, next, currentPage, gotoPage, jumpPrev, jumpNext, listNode } =
+    usePagination({ totalPage: totalPage, current: _page });
 
   useEffect(() => {
-    if (!_page && !_query) {
-      createSearchParams(
-        setSearchParams({
-          query: "cat",
-          page: 1,
-        })
-      );
-      dispatch(
-        getImages({
-          query: "cat",
-          page: {
-            number: 1,
-            perPage: 30,
-          },
-        })
-      );
+    setSearchParams({
+      query: _query,
+      page: currentPage
+    })
+    dispatch(setPage(currentPage))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentPage])
+
+  useEffect(() => {
+    if (_query && _page) {
+      if (_query !== query || _page !== page) {
+        dispatch(
+          getImages({
+            query: _query,
+            page: _page
+          })
+        )
+      }
+      dispatch(setQuery(_query))
+      dispatch(setPage(_page))
     } else {
-      dispatch(
-        getImages({
-          query: _query,
-          page: {
-            number: _page,
-            perPage: 30,
-          },
-        })
-      );
-      dispatch(querySearch(_query));
+      setSearchParams({
+        query: query,
+        page: page
+      })
     }
-  }, [_query, _page, dispatch, setSearchParams]);
-
-  useEffect(() => {
-    dispatch(changePage(_page));
-  }, [_page, dispatch]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams.toString()])
 
   return (
     <Box className="App" pt={3} p="1rem">
@@ -86,7 +83,17 @@ export default function DefaultLayout() {
             _hover={{ opacity: 1 }}
           >
             <Box className="app-pagination">
-              <AppPagintion total={page.totalPage} defaultCurrent={_page} />
+              {_page &&
+                <AppPagintion
+                  total={totalPage}
+                  prev={prev}
+                  next={next}
+                  currentPage={currentPage}
+                  gotoPage={gotoPage}
+                  jumpPrev={jumpPrev}
+                  jumpNext={jumpNext}
+                  listNode={listNode} />
+              }
             </Box>
           </Flex>
         </Box>

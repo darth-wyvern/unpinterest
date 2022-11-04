@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { useSearchParams } from "react-router-dom";
 
 /**
  * inRange is a function sure value number is in range
@@ -19,9 +20,14 @@ const inRange = (number, min, max) => {
  * @returns component
  */
 function usePagination({ totalPage, current }) {
+
+  const [searchParams,] = useSearchParams();
+  const _page = searchParams.get("page");
+
   const numNode = 4;
 
-  const [currentPage, gotoPage] = useState(current)
+  const [currentPage, gotoPage] = useState(_page | current)
+
   let minNodePage = Math.round(currentPage - numNode / 2)
   let maxNodePage = Math.round(currentPage + numNode / 2)
 
