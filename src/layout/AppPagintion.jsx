@@ -6,12 +6,8 @@ import {
   ArrowLeftIcon,
   ArrowRightIcon,
 } from "@chakra-ui/icons";
-import { useSearchParams } from "react-router-dom";
 
 export default function AppPagintion({ total, prev, next, currentPage, gotoPage, jumpPrev, jumpNext, listNode }) {
-  const [searchParams,] = useSearchParams();
-  const _query = searchParams.get('query')
-
   return (
     <Flex gap={2} flexWrap="wrap" borderRadius="1rem">
       <Button onClick={() => prev()} w="1rem">
