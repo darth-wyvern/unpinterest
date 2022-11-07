@@ -1,22 +1,20 @@
 import React, { useEffect } from "react";
-import ImageManagement from "../image-management/ImageManagement";
-import AppHeader from "./AppHeader";
 import { Box, Button, Flex } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  getImages, setPage, setQuery
-} from "../image-management/imageSlice";
-import AppPagintion from "./AppPagintion";
 import { Outlet, useSearchParams } from "react-router-dom";
-import usePagination from '../common/usePagination'
+import { getImages, setPage, setQuery } from "../image-management/imageSlice";
+import AppHeader from "./AppHeader";
+import AppPagintion from "./AppPagintion";
+import usePagination from "../common/usePagination";
+import ImageManagement from "../image-management/ImageManagement";
 
 export default function DefaultLayout() {
   const dispatch = useDispatch();
   const { query, page, data, totalPage } = useSelector((state) => state.image);
 
   const [searchParams, setSearchParams] = useSearchParams();
-  const _page = searchParams.get('page')
-  const _query = searchParams.get('query')
+  const _page = searchParams.get("page");
+  const _query = searchParams.get("query");
 
   const { prev, next, currentPage, gotoPage, jumpPrev, jumpNext, listNode } =
     usePagination({ totalPage: totalPage, current: _page });
@@ -24,22 +22,22 @@ export default function DefaultLayout() {
   useEffect(() => {
     setSearchParams({
       query: _query,
-      page: currentPage
-    })
-    dispatch(setPage(currentPage))
+      page: currentPage,
+    });
+    dispatch(setPage(currentPage));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPage])
+  }, [currentPage]);
 
   useEffect(() => {
     if (!_page && !_query) {
       setSearchParams({
         query: query,
-        page: page
-      })
-      gotoPage(page | 1)
+        page: page,
+      });
+      gotoPage(page | 1);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, []);
 
   useEffect(() => {
     if (_query && _page) {
@@ -47,20 +45,20 @@ export default function DefaultLayout() {
         dispatch(
           getImages({
             query: _query,
-            page: _page
+            page: _page,
           })
-        )
+        );
       }
-      dispatch(setQuery(_query))
-      dispatch(setPage(_page))
+      dispatch(setQuery(_query));
+      dispatch(setPage(_page));
     } else {
       setSearchParams({
         query: query,
-        page: page
-      })
+        page: page,
+      });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchParams.toString()])
+  }, [searchParams.toString()]);
 
   return (
     <Box className="App" pt={3} p="1rem">
@@ -94,7 +92,7 @@ export default function DefaultLayout() {
             _hover={{ opacity: 1 }}
           >
             <Box className="app-pagination">
-              {_page &&
+              {_page && (
                 <AppPagintion
                   total={totalPage}
                   prev={prev}
@@ -103,8 +101,9 @@ export default function DefaultLayout() {
                   gotoPage={gotoPage}
                   jumpPrev={jumpPrev}
                   jumpNext={jumpNext}
-                  listNode={listNode} />
-              }
+                  listNode={listNode}
+                />
+              )}
             </Box>
           </Flex>
         </Box>
