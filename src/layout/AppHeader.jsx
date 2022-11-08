@@ -1,6 +1,5 @@
 import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { querySearch } from "../image-management/imageSlice";
 import {
   Box,
   Button,
@@ -16,20 +15,20 @@ import { Link, useSearchParams } from "react-router-dom";
 import { setToken, signout } from "../Auth/AuthSlice";
 import { AtSignIcon } from "@chakra-ui/icons";
 
-export default function AppHeader() {
+export default function AppHeader({ resetPagination }) {
   const dispatch = useDispatch();
   const bgColorHeader = useColorModeValue("white", "gray.800");
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [, setSearchParams] = useSearchParams();
   const searchInputRef = useRef();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // dispatch(querySearch(searchInputRef.current.value));
     searchInputRef.current.focus();
     setSearchParams({
       query: searchInputRef.current.value,
-      page: 1
-    })
+      page: 1,
+    });
+    resetPagination(1);
   };
 
   const { token } = useSelector((state) => state.auth);

@@ -29,17 +29,6 @@ export default function DefaultLayout() {
   }, [currentPage]);
 
   useEffect(() => {
-    if (!_page && !_query) {
-      setSearchParams({
-        query: query,
-        page: page,
-      });
-      gotoPage(page | 1);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
     if (_query && _page) {
       if (_query !== query || _page !== page) {
         dispatch(
@@ -71,7 +60,7 @@ export default function DefaultLayout() {
         check signin
       </Button>
       <Box pos="fixed" top={0} zIndex={2}>
-        <AppHeader />
+        <AppHeader resetPagination={gotoPage} />
       </Box>
       {data && (
         <Box>

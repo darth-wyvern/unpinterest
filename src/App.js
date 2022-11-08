@@ -2,12 +2,12 @@ import React from "react";
 import { Box } from "@chakra-ui/react";
 import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import withSuspense from "./common/withSuspense";
+import withSuspense from "./components/withSuspense";
 
-const DefaultLayout = React.lazy(() => import('./layout/DefaultLayout'));
-const signin = React.lazy(() => import('./Auth/Login/LoginCheckToast'))
-const signup = React.lazy(() => import('./Auth/Register/Register3StepVerification'))
-const lightbox = React.lazy(() => import('./image-management/lightBox'))
+const DefaultLayout = React.lazy(() => import('./layout/Home'));
+const signin = React.lazy(() => import('./layout/AppLogin'))
+const signup = React.lazy(() => import('./layout/AppRegister'))
+const lightbox = React.lazy(() => import('./layout/AppLightBox'))
 
 function App() {
   return (

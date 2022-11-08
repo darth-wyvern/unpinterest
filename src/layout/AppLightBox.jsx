@@ -14,9 +14,9 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
-import { setImageChoosing } from "./imageSlice";
+import { setImageChoosing } from "../image-management/imageSlice";
 
-export default function LightBox() {
+export default function AppLightBox() {
   const navigator = useNavigate();
   const dispatch = useDispatch();
   const { data, imageChoosing } = useSelector((state) => state.image);
@@ -29,7 +29,15 @@ export default function LightBox() {
   };
 
   return (
-    <Box pos="fixed" zIndex={999} inset={0} h="100vh" w='100vw' bg="#000" color="white">
+    <Box
+      pos="fixed"
+      zIndex={999}
+      inset={0}
+      h="100vh"
+      w="100vw"
+      bg="#000"
+      color="white"
+    >
       <CloseButton pos="fixed" right={0} onClick={() => navigator("/")} />
       {tabIndex > 0 && (
         <IconButton
