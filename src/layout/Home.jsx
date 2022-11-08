@@ -34,7 +34,11 @@ export default function DefaultLayout() {
         query: query,
         page: page,
       });
-      gotoPage(page | 1);
+      if (page > 0) {
+        gotoPage(page);
+      } else {
+        gotoPage(1);
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
